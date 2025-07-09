@@ -1,8 +1,13 @@
-FROM maven:3.8.6-eclipse-temurin-17
+# You can change this base image to anything else
+# But make sure to use the correct version of Java
+FROM adoptopenjdk/openjdk11:alpine-jre
 
-# Install Docker CLI inside the image (for building Docker images in pipeline)
-RUN apt-get update && \
-    apt-get install -y docker.io && \
-    apt-get clean
+# Simply the artifact path
+ARG artifact=target/spring-boot-web.jar
 
-CMD ["cat"]
+WORKDIR /opt/app
+
+COPY ${artifact} app.jar
+
+# This should not be changed
+ENTRYPOINT ["java","-jar","app.jar"]
